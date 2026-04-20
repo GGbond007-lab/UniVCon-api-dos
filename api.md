@@ -1,9 +1,12 @@
-# API 文档
+# EventStack 事件栈
 
-## IObjectResolver
-解析实例、注册、注入
+## 方法
 
-### 方法
-- Resolve<T>()
-- TryResolve()
-- Inject()
+### Push(IBaseEvent evt)
+入栈事件
+
+### Pop()
+出栈事件
+
+### Find<T>()
+查找指定类型的事件
