@@ -1,4 +1,5 @@
 export default {
+  base: "/UniVCon-api-dos/",
   title: "我的框架 API",
   description: "我的游戏框架文档",
 
