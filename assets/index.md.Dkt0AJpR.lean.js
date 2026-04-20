@@ -1,0 +1,1 @@
+import{_ as i,o as a,c as e,ag as n}from"./chunks/framework.sADbjgS3.js";const c=JSON.parse('{"title":"VContainer","description":"","frontmatter":{},"headers":[],"relativePath":"index.md","filePath":"index.md"}'),t={name:"index.md"};function l(r,s,h,p,o,d){return a(),e("div",null,[...s[0]||(s[0]=[n("",18)])])}const u=i(t,[["render",l]]);export{c as __pageData,u as default};
