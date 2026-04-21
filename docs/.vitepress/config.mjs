@@ -1,6 +1,6 @@
 export default {
   base: "/UniVCon-api-dos/",
-  title: "VContainer",
+  title: "开发框架",
   description: "The extra fast DI (Dependency Injection) library for Unity Game Engine",
   
   head: [
@@ -18,10 +18,11 @@ export default {
     sidebar: {
       '/': [
         {
-          text: 'Guide',
+          text: '选择你的工作流',
           items: [
-            { text: 'Getting Started', link: '/' },
-            { text: 'Installation', link: '/guide/install' },
+            { text: 'Web前端', link: '/Web/web' },
+            { text: 'Unity3D', link: '/Unity3D/unity3D' },
+            { text: '场景美术', link: '/SceneArt/sceneArt' },
           ],
         },
       ],

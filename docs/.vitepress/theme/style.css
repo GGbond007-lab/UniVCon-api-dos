@@ -25,7 +25,20 @@
 
     --vp-layout-max-width: 1440px;
 }
+/* 给所有代码块设置深色主题，文字白色 */
+.vp-doc div[class*="language-"] {
+    background-color: #b8b8b8 !important; /* VS Code 同款深色背景 */
+    border-radius: 8px;
+    padding: 16px;
+}
 
+.vp-doc div[class*="language-"] pre,
+.vp-doc div[class*="language-"] code {
+    color: #000000 !important; /* 浅色代码文字 */
+    font-family: Consolas, "SFMono-Regular", monospace;
+    font-size: 14px;
+    line-height: 1.6;
+}
 /* Reset */
 *,
 *::before,
@@ -148,10 +161,9 @@ body {
 
 /* Main Content */
 .vp-doc {
-    flex: 1;
-    min-width: 0;
-    padding: 32px 48px;
-    max-width: 100%;
+    max-width: 100% !important; /* 取消默认最大宽度限制 */
+    width: 100% !important;
+    padding: 32px 2rem !important; /* 只保留左右内边距，避免贴边 */
 }
 
 .vp-doc h1 {

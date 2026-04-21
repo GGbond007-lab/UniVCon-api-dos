@@ -1,60 +1,308 @@
-# VContainerRH
+# 项目设计模式与模块功能
 
-The extra fast DI (Dependency Injection) library for Unity Game Engine.  
-**"V"** means making Unity's initial **"U"** more thinner and solid..!
+## 1. 设计模式与理念
 
-## Features
+### 1.1 依赖注入模式
 
-- **Fast Resolve**: Basically 5-10x faster than Zenject
-- **Minimum GC Allocation**: In Resolve, we have zero allocation without spawned instances
-- **Small Code Size**: Few internal types and few .callvirt
-- **Assisting Correct DI Way**: Provides simple and transparent API, and carefully select features
-- **Immutable Container**: Thread safety and robustness
+**实现方式**：通过 VContainer 框架实现
 
-## Installation
+**核心思想**：
+- 将对象的创建和依赖关系的管理从代码中分离
+- 通过构造函数注入实现松耦合
+- 支持多种生命周期管理策略（单例、作用域、瞬态）
 
-Requires Unity 2018.4+
+**应用场景**：
+- 全局服务的注册和管理
+- 场景级服务的注册和管理
+- 事件处理器和事件类型的注册
 
-### Install via UPM (using Git URL)
+**优势**：
+- 提高代码的可测试性
+- 减少代码耦合
+- 便于维护和扩展
 
-Navigate to your project's `Packages` folder and open the `manifest.json` file.
-Add this line below the `"dependencies": {` line:
+### 1.2 事件发布/订阅模式
 
-```
-"jp.hadashikick.vcontainer": "https://github.com/hadashiA/VContainer.git?path=VContainer/Assets/VContainer#1.17.0",
-```
+**实现方式**：通过 EventBus 类实现
 
-### Install via OpenUPM
+**核心思想**：
+- 事件发布者和订阅者解耦
+- 基于类型的事件分发
+- 支持自动取消订阅
 
-```bash
-openupm add jp.hadashikick.vcontainer
-```
+**应用场景**：
+- 模块间通信
+- 事件通知
+- 状态变化通知
 
-## Quick Start
+**优势**：
+- 减少模块间直接依赖
+- 提高系统的可扩展性
+- 便于事件的追踪和管理
 
-First, create a scope:
+### 1.3 工厂模式
 
-```csharp
-public class GameLifetimeScope : LifetimeScope
-{
-    protected override void Configure(IContainerBuilder builder)
-    {
-        builder.RegisterEntryPoint<ActorPresenter>();
-        builder.Register<CharacterService>(Lifetime.Scoped);
-        builder.Register<IRouteSearch, AStarRouteSearch>(Lifetime.Singleton);
-        builder.RegisterComponentInHierarchy<ActorsView>();
-    }
-}
-```
+**实现方式**：通过 Func<Type, IBaseEvent> 委托实现
 
-## Architecture
+**核心思想**：
+- 延迟对象的创建
+- 统一的对象创建接口
+- 容器解析确保依赖注入
 
-| Component         | Description                                |
-| ----------------- | ------------------------------------------ |
-| LifetimeScope     | Root container for service registration    |
-| IContainerBuilder | Builder for registering services           |
-| IObjectResolver   | Resolver for accessing registered services |
+**应用场景**：
+- 事件对象的创建
+- 动态类型的实例化
 
-## License
+**优势**：
+- 集中管理对象创建逻辑
+- 支持依赖注入
+- 提高代码的灵活性
 
-MIT License
+### 1.4 单例模式
+
+**实现方式**：通过 VContainer 的 Lifetime.Singleton 实现
+
+**核心思想**：
+- 确保全局只有一个实例
+- 提供全局访问点
+
+**应用场景**：
+- 全局服务（如 EventBus、SceneLoadManager 等）
+- 事件栈管理
+
+**优势**：
+- 减少内存占用
+- 确保状态一致性
+- 简化全局服务的访问
+
+### 1.5 观察者模式
+
+**实现方式**：通过 EventBus 的订阅机制实现
+
+**核心思想**：
+- 观察者订阅主题的状态变化
+- 主题状态变化时通知所有观察者
+
+**应用场景**：
+- 事件系统
+- 状态变化通知
+
+**优势**：
+- 实现松耦合的通信机制
+- 支持一对多的依赖关系
+
+### 1.6 桥接模式
+
+**实现方式**：通过 WebMsgHandlerManager 实现
+
+**核心思想**：
+- 将抽象和实现分离
+- 允许它们独立变化
+
+**应用场景**：
+- Web 前端与 Unity 通信
+- 不同平台的适配
+
+**优势**：
+- 提高系统的可扩展性
+- 便于跨平台适配
+
+### 1.7 策略模式
+
+**实现方式**：通过 IEventMsgHandler 接口实现
+
+**核心思想**：
+- 定义算法族，封装起来，使它们可以互相替换
+- 策略的变化独立于使用策略的客户端
+
+**应用场景**：
+- 不同事件的处理逻辑
+- 可替换的算法实现
+
+**优势**：
+- 提高代码的可扩展性
+- 便于算法的替换和测试
+
+### 1.8 模板方法模式
+
+**实现方式**：通过 BaseEvent 基类实现
+
+**核心思想**：
+- 定义算法的骨架，将一些步骤延迟到子类中
+- 子类可以重定义算法的某些特定步骤，而不改变算法的结构
+
+**应用场景**：
+- 事件的基础行为定义
+- 统一的事件处理流程
+
+**优势**：
+- 提高代码的复用性
+- 确保算法的结构一致性
+
+## 2. 模块功能
+
+### 2.1 依赖注入模块
+
+**核心组件**：
+- `RootLifetimeScope`：根作用域，负责注册全局服务
+- `Scene1_LifetimeScope`：场景级作用域，负责注册场景特定服务
+
+**功能**：
+- 服务注册和管理
+- 生命周期管理
+- 依赖解析
+- 自动注册事件类型和处理器
+
+**技术实现**：
+- 使用 VContainer 框架
+- 支持多种生命周期策略
+- 反射自动注册
+
+### 2.2 事件系统模块
+
+**核心组件**：
+- `EventBus`：事件总线，负责事件的发布和订阅
+- `EventStack`：事件栈，管理事件的层级关系
+- `BaseEvent`：事件基类
+- 具体事件实现（如 `YourEvent1`、`YourEvent2`）
+- 事件处理器（如 `YourEvent1MsgHandler`）
+
+**功能**：
+- 事件发布和订阅
+- 事件类型管理
+- 事件栈管理
+- 自动取消订阅
+
+**技术实现**：
+- 基于委托的事件系统
+- 泛型确保类型安全
+- 反射自动注册
+
+### 2.3 场景管理模块
+
+**核心组件**：
+- `SceneLoadManager`：场景加载管理器
+
+**功能**：
+- 异步场景加载
+- 加载完成通知
+- 与 Web 前端通信
+
+**技术实现**：
+- 使用 `async/await` 实现异步加载
+- 预留 Web 桥接接口
+
+### 2.4 数据管理模块
+
+**核心组件**：
+- `DataSyncManager`：数据同步管理器
+
+**功能**：
+- 数据同步管理
+- 与 Web 端数据交互
+- 数据缓存和管理
+
+**技术实现**：
+- 预留 Web 桥接接口
+- 数据同步逻辑
+
+### 2.5 标签系统模块
+
+**核心组件**：
+- `LabelManager`：标签管理器
+- `YourEvent1LabelController`：标签控制器
+- `LabelItem`、`LabelNewItem`：标签项
+
+**功能**：
+- 标签管理
+- 标签数据处理
+- 标签状态同步
+
+**技术实现**：
+- 模块化设计
+- 依赖注入
+
+### 2.6 输入系统模块
+
+**核心组件**：
+- `InputService`：输入服务
+
+**功能**：
+- 输入处理
+- 与 Unity 新输入系统集成
+- 输入状态管理
+
+**技术实现**：
+- 集成 Unity Input System
+- 实现 IInputService 接口
+
+### 2.7 Web 桥接模块
+
+**核心组件**：
+- `WebMsgHandlerManager`：Web 消息处理器管理器
+
+**功能**：
+- 管理 Web 消息处理器
+- 与前端通信的桥接
+- 消息的分发和处理
+
+**技术实现**：
+- 预留 Web 桥接接口
+- 消息处理器管理
+
+### 2.8 资源管理模块
+
+**核心组件**：
+- Unity Addressable Assets 配置
+
+**功能**：
+- 资源打包
+- 内容更新
+- 资源组管理
+
+**技术实现**：
+- 使用 Unity Addressable Assets
+- 资源组配置
+
+## 3. 核心功能流程
+
+### 3.1 应用启动流程
+
+1. **根作用域初始化**：`RootLifetimeScope` 注册全局服务
+2. **应用入口执行**：`RootEntryPoint` 加载初始场景
+3. **场景加载**：`SceneLoadManager` 异步加载场景
+4. **场景作用域初始化**：`Scene1_LifetimeScope` 注册场景服务
+5. **场景入口执行**：`Scene1EntryPoint` 完成场景初始化
+
+### 3.2 事件处理流程
+
+1. **事件发布**：通过 `EventBus.Publish` 发布事件
+2. **事件订阅**：通过 `EventBus.Subscribe` 订阅事件
+3. **事件处理**：事件处理器处理相应事件
+4. **事件栈管理**：`EventStack` 管理事件的层级关系
+
+### 3.3 场景加载流程
+
+1. **触发加载**：调用 `SceneLoadManager.LoadSceneAsync`
+2. **异步加载**：使用 `async/await` 异步加载场景
+3. **加载完成**：场景加载完成后通知前端
+4. **场景初始化**：场景作用域初始化和入口执行
+
+## 4. 技术特点
+
+1. **模块化设计**：清晰的模块划分，便于维护和扩展
+2. **依赖注入**：使用 VContainer 实现松耦合设计
+3. **事件驱动**：基于事件总线的通信机制
+4. **异步操作**：使用 `async/await` 实现异步场景加载
+5. **类型安全**：泛型事件系统确保类型安全
+6. **自动注册**：通过反射自动注册事件类型和处理器
+7. **可扩展性**：预留 Web 桥接接口，支持与前端通信
+8. **资源管理**：集成 Addressable Assets 进行资源管理
+
+## 5. 总结
+
+本项目采用了多种设计模式和现代软件工程理念，构建了一个模块化、可扩展的 Unity 应用架构。通过依赖注入、事件发布/订阅、工厂模式等设计模式的应用，实现了代码的解耦和模块化管理。
+
+项目的核心模块包括依赖注入、事件系统、场景管理、数据管理、标签系统、输入系统、Web 桥接和资源管理等，每个模块都有明确的职责和功能。通过这些模块的协同工作，实现了一个功能完整、架构清晰的 Unity 应用。
+
+设计模式的应用使得项目具有良好的可扩展性、可维护性和可测试性，为后续的功能扩展和维护打下了坚实的基础。
