@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#FFFEF9">
+    <title>恭喜小马考上研究生</title>
+    <style>
+        /* 苹果设计准则 - San Francisco 字体 */
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: local('SF Pro Display'), local('SFProDisplay-Regular');
+            font-weight: 400;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: local('SF Pro Display Medium'), local('SFProDisplay-Medium');
+            font-weight: 500;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: local('SF Pro Display Semibold'), local('SFProDisplay-Semibold');
+            font-weight: 600;
+            font-style: normal;
+        }
+
+        @font-face {
+            font-family: 'SF Pro Display';
+            src: local('SF Pro Display Bold'), local('SFProDisplay-Bold');
+            font-weight: 700;
+            font-style: normal;
+        }
+
+        /* 苹果设计变量 */
+        :root {
+            /* 颜色系统 */
+            --system-background: #FFFEF9;
+            --system-surface: #FFFFFF;
+            --system-surface-secondary: #F8F9FA;
+            --system-text-primary: #1D1D1F;
+            --system-text-secondary: #86868B;
+            --system-text-tertiary: #AEAEB2;
+            --system-accent: #FF69B4;
+            --system-accent-light: rgba(255, 105, 180, 0.1);
+            --system-border: rgba(0, 0, 0, 0.08);
+            --system-shadow: rgba(0, 0, 0, 0.05);
+            --system-shadow-elevated: rgba(0, 0, 0, 0.1);
+            
+            /* 间距系统 - 8pt 网格 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
+            
+            /* 圆角系统 */
+            --radius-sm: 8px;
+            --radius-md: 12px;
+            --radius-lg: 16px;
+            --radius-xl: 24px;
+            
+            /* 字体大小 */
+            --text-xs: 12px;
+            --text-sm: 14px;
+            --text-base: 16px;
+            --text-lg: 18px;
+            --text-xl: 24px;
+            --text-2xl: 34px;
+            --text-3xl: 48px;
+            
+            /* 字重 */
+            --font-regular: 400;
+            --font-medium: 500;
+            --font-semibold: 600;
+            --font-bold: 700;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background-color: var(--system-background);
+            color: var(--system-text-primary);
+            font-weight: var(--font-regular);
+            line-height: 1.5;
+            letter-spacing: -0.01em;
+            min-height: 200vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* 装饰元素 - 苹果风格的微妙装饰 */
+        .decorations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .float-element {
+            position: absolute;
+            opacity: 0.03;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .circle-1 {
+            width: 300px;
+            height: 300px;
+            background: var(--system-accent);
+            border-radius: 50%;
+            top: -150px;
+            right: -100px;
+        }
+
+        .circle-2 {
+            width: 200px;
+            height: 200px;
+            background: var(--system-accent);
+            border-radius: 50%;
+            bottom: -100px;
+            left: -50px;
+            animation-delay: 3s;
+        }
+
+        .circle-3 {
+            width: 150px;
+            height: 150px;
+            background: #B2DDFE;
+            border-radius: 50%;
+            top: 40%;
+            right: -75px;
+            animation-delay: 5s;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) scale(1); }
+            50% { transform: translateY(-20px) scale(1.05); }
+        }
+
+        /* 卡通角色 - 简洁风格 */
+        .cartoon-character {
+            position: fixed;
+            font-size: 56px;
+            z-index: 10;
+            opacity: 0.7;
+        }
+
+        .dog-left {
+            left: 20px;
+            bottom: 40px;
+        }
+
+        .dog-right {
+            right: 20px;
+            bottom: 40px;
+            transform: scaleX(-1);
+        }
+
+        /* 主容器 */
+        .container {
+            position: relative;
+            z-index: 1;
+            padding: 0 var(--spacing-md);
+            max-width: 428px;
+            margin: 0 auto;
+        }
+
+        /* 第一部分 - 标题 */
+        .section-title {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: var(--spacing-2xl) 0;
+        }
+
+        .emoji-row {
+            animation: fadeInUp 0.8s ease-out forwards;
+            opacity: 0;
+            margin-bottom: var(--spacing-xl);
+        }
+
+        .emoji {
+            font-size: 32px;
+            margin: 0 var(--spacing-sm);
+            animation: wave 1.2s ease-in-out infinite;
+        }
+
+        .emoji:nth-child(2) { animation-delay: 0.15s; }
+        .emoji:nth-child(3) { animation-delay: 0.3s; }
+        .emoji:nth-child(4) { animation-delay: 0.45s; }
+
+        @keyframes wave {
+            0%, 100% { transform: rotate(-8deg); }
+            50% { transform: rotate(8deg); }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .main-title-wrapper {
+            animation: fadeInPop 1.2s ease-out 0.3s forwards;
+            opacity: 0;
+            width: 100%;
+        }
+
+        @keyframes fadeInPop {
+            0% { 
+                transform: scale(0.95) translateY(10px); 
+                opacity: 0;
+            }
+            100% { 
+                transform: scale(1) translateY(0); 
+                opacity: 1;
+            }
+        }
+
+        .main-title {
+            font-size: var(--text-2xl);
+            font-weight: var(--font-bold);
+            color: var(--system-text-primary);
+            line-height: 1.2;
+            letter-spacing: -0.02em;
+            margin-bottom: var(--spacing-lg);
+        }
+
+        .main-title-highlight {
+            background: linear-gradient(135deg, var(--system-accent), #FF85B3);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .sub-title {
+            font-size: var(--text-base);
+            font-weight: var(--font-medium);
+            color: var(--system-text-secondary);
+            letter-spacing: 0.02em;
+            animation: fadeInUp 0.6s ease-out 0.8s forwards;
+            opacity: 0;
+            margin-bottom: var(--spacing-md);
+        }
+
+        .school-name {
+            font-size: var(--text-sm);
+            font-weight: var(--font-semibold);
+            color: #5A9BD5;
+            animation: fadeInUp 0.6s ease-out 1s forwards;
+            opacity: 0;
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: var(--spacing-2xl);
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: var(--text-xs);
+            color: var(--system-text-tertiary);
+            animation: bounceArrow 1.5s ease-in-out infinite;
+            animation-delay: 1.5s;
+            opacity: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+
+        @keyframes bounceArrow {
+            0%, 100% { 
+                transform: translateX(-50%) translateY(0); 
+                opacity: 0.4;
+            }
+            50% { 
+                transform: translateX(-50%) translateY(8px); 
+                opacity: 0.8;
+            }
+        }
+
+        /* 第二部分 - 祝贺卡片 */
+        .section-cards {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-2xl) 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .section-cards.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .congrats-card {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-md);
+            width: 100%;
+        }
+
+        .card {
+            background: var(--system-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--radius-lg);
+            box-shadow: 0 2px 8px var(--system-shadow);
+            border: 1px solid var(--system-border);
+            display: flex;
+            align-items: flex-start;
+            gap: var(--spacing-md);
+            opacity: 0;
+            transform: translateX(-20px);
+            transition: all 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .card:nth-child(2) { transition-delay: 0.1s; }
+        .card:nth-child(3) { transition-delay: 0.2s; }
+        .card:nth-child(4) { transition-delay: 0.3s; }
+
+        .card-icon {
+            font-size: 32px;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .card-content {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .card-title {
+            font-size: var(--text-base);
+            font-weight: var(--font-semibold);
+            color: var(--system-text-primary);
+            margin-bottom: var(--spacing-xs);
+            letter-spacing: -0.01em;
+        }
+
+        .card-desc {
+            font-size: var(--text-xs);
+            color: var(--system-text-secondary);
+            line-height: 1.5;
+        }
+
+        /* 第三部分 - 祝福语 */
+        .section-wishes {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-2xl) 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.8s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .section-wishes.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .wish-icon {
+            font-size: 56px;
+            margin-bottom: var(--spacing-xl);
+            animation: float 3s ease-in-out infinite;
+            opacity: 0;
+        }
+
+        .section-wishes.visible .wish-icon {
+            animation: fadeInFloat 0.8s ease-out forwards;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px); }
+        }
+
+        @keyframes fadeInFloat {
+            0% { 
+                opacity: 0; 
+                transform: translateY(20px); 
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0); 
+                animation: float 3s ease-in-out infinite;
+            }
+        }
+
+        .wish-text {
+            font-size: var(--text-lg);
+            color: var(--system-text-primary);
+            line-height: 1.8;
+            letter-spacing: 0.02em;
+            text-align: center;
+            opacity: 0;
+            transform: translateY(15px);
+            transition: all 0.6s ease-out 0.3s;
+        }
+
+        .section-wishes.visible .wish-text {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .wish-highlight {
+            font-weight: var(--font-semibold);
+            color: var(--system-accent);
+        }
+
+        /* 第四部分 - 结尾 */
+        .section-end {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: var(--spacing-2xl) 0;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        .section-end.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .end-emoji {
+            font-size: 64px;
+            margin-bottom: var(--spacing-lg);
+            animation: floatEmoji 3s ease-in-out infinite;
+        }
+
+        @keyframes floatEmoji {
+            0%, 100% { transform: translateY(0) rotate(-3deg); }
+            50% { transform: translateY(-12px) rotate(3deg); }
+        }
+
+        .end-text {
+            font-size: var(--text-lg);
+            font-weight: var(--font-semibold);
+            color: var(--system-text-primary);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .end-name {
+            font-size: var(--text-sm);
+            font-weight: var(--font-medium);
+            color: var(--system-accent);
+            letter-spacing: 0.02em;
+        }
+
+        /* 底部 */
+        .footer {
+            text-align: center;
+            padding: var(--spacing-xl) 0 var(--spacing-2xl);
+            color: var(--system-text-tertiary);
+            font-size: var(--text-xs);
+            letter-spacing: 0.02em;
+        }
+
+        /* iPad 适配 */
+        @media (min-width: 768px) {
+            .container {
+                max-width: 512px;
+            }
+
+            .main-title {
+                font-size: var(--text-3xl);
+            }
+
+            .emoji {
+                font-size: 40px;
+            }
+
+            .cartoon-character {
+                font-size: 72px;
+            }
+
+            .dog-left {
+                left: 40px;
+            }
+
+            .dog-right {
+                right: 40px;
+            }
+
+            .congrats-card {
+                grid-template-columns: repeat(4, 1fr);
+            }
+
+            .card {
+                padding: var(--spacing-xl);
+            }
+
+            .wish-card {
+                padding: var(--spacing-2xl);
+            }
+        }
+
+        /* 暗模式支持 */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --system-background: #0D0D0F;
+                --system-surface: #1C1C1E;
+                --system-surface-secondary: #2C2C2E;
+                --system-text-primary: #FFFFFF;
+                --system-text-secondary: #86868B;
+                --system-text-tertiary: #636366;
+                --system-border: rgba(255, 255, 255, 0.1);
+                --system-shadow: rgba(0, 0, 0, 0.3);
+                --system-shadow-elevated: rgba(0, 0, 0, 0.4);
+            }
+
+            .circle-1, .circle-2 {
+                opacity: 0.05;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 装饰元素 -->
+    <div class="decorations">
+        <div class="float-element circle-1"></div>
+        <div class="float-element circle-2"></div>
+        <div class="float-element circle-3"></div>
+    </div>
+
+    <!-- 卡通角色装饰 -->
+    <div class="cartoon-character dog-left">🐕</div>
+    <div class="cartoon-character dog-right">🐕</div>
+
+    <!-- 主内容 -->
+    <div class="container">
+        <!-- 第一部分 - 标题 -->
+        <section class="section-title">
+            <div class="emoji-row">
+                <span class="emoji">🎉</span>
+                <span class="emoji">🎊</span>
+                <span class="emoji">✨</span>
+                <span class="emoji">🌟</span>
+            </div>
+            <div class="main-title-wrapper">
+                <h1 class="main-title">恭喜<span class="main-title-highlight">小马</span>考上<br>东北师范大学研究生</h1>
+            </div>
+            <p class="sub-title">梦想成真 · 未来可期</p>
+            <p class="school-name">东北师范大学</p>
+            <div class="scroll-hint">
+                <span>向上滑动</span>
+                <span>↓</span>
+            </div>
+        </section>
+
+        <!-- 第二部分 - 祝贺卡片 -->
+        <section class="section-cards" id="sectionCards">
+            <div class="congrats-card">
+                <div class="card" id="card1">
+                    <span class="card-icon">🚢</span>
+                    <div class="card-content">
+                        <div class="card-title">成功上岸</div>
+                        <div class="card-desc">导师画饼、论文秃头、熬夜常态的新生活开启！祝你科研不脱发，毕业不延期！</div>
+                    </div>
+                </div>
+                <div class="card" id="card2">
+                    <span class="card-icon">🥼</span>
+                    <div class="card-content">
+                        <div class="card-title">喜提新生</div>
+                        <div class="card-desc">实验室常驻选手上线！论文为伴，早八晚十，愿你逢导师必温柔，逢审稿必通过！</div>
+                    </div>
+                </div>
+                <div class="card" id="card3">
+                    <span class="card-icon">🎮</span>
+                    <div class="card-content">
+                        <div class="card-title">晋级成功</div>
+                        <div class="card-desc">告别本科摆烂，正式加入科研内卷大军！祝你实验一次成，论文随便发！</div>
+                    </div>
+                </div>
+                <div class="card" id="card4">
+                    <span class="card-icon">☕</span>
+                    <div class="card-content">
+                        <div class="card-title">加油干饭</div>
+                        <div class="card-desc">咖啡当水喝，头发当草薅！愿你代码无bug，数据不造假，快乐科研每一天！</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 第三部分 - 祝福语 -->
+        <section class="section-wishes" id="sectionWishes">
+            <span class="wish-icon">🌈</span>
+            <p class="wish-text">
+                <span class="wish-highlight">愿你在研究生生涯中收获满满，绽放光芒！</span><br><br>
+                每一份努力都值得被肯定，每一滴汗水都浇灌着梦想的花朵。<br>
+                愿你在学术的海洋中乘风破浪，书写属于自己的精彩篇章！
+            </p>
+        </section>
+
+        <!-- 第四部分 - 结尾 -->
+        <section class="section-end" id="sectionEnd">
+            <span class="end-emoji">🎊</span>
+            <p class="end-text">再次恭喜你！</p>
+            <p class="end-name">—— 送给最棒的小马</p>
+        </section>
+
+        <!-- 底部 -->
+        <div class="footer">
+            Made with 💖 for Xiao Ma
+        </div>
+    </div>
+
+    <script>
+        // 滚动触发动画
+        function setupScrollAnimation() {
+            const sections = [
+                { element: document.getElementById('sectionCards'), cards: ['card1', 'card2', 'card3', 'card4'] },
+                { element: document.getElementById('sectionWishes') },
+                { element: document.getElementById('sectionEnd') }
+            ];
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        
+                        const sectionData = sections.find(s => s.element === entry.target);
+                        if (sectionData && sectionData.cards) {
+                            setTimeout(() => {
+                                sectionData.cards.forEach((cardId, index) => {
+                                    setTimeout(() => {
+                                        const card = document.getElementById(cardId);
+                                        if (card) card.classList.add('visible');
+                                    }, index * 80);
+                                });
+                            }, 150);
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.15,
+                rootMargin: '0px 0px -40px 0px'
+            });
+
+            sections.forEach(section => {
+                if (section.element) {
+                    observer.observe(section.element);
+                }
+            });
+        }
+
+        // 初始化
+        setupScrollAnimation();
+    </script>
+</body>
+</html>
